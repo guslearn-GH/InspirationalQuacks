@@ -25,6 +25,8 @@ private const val TAG = "QuackFragment"
 class QuackFragment(var infoChoice:Int): Fragment() {
 
     lateinit var binding: QuackFragmentBinding
+    lateinit var viewModel:QuackViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +41,9 @@ class QuackFragment(var infoChoice:Int): Fragment() {
             false
         )
 
-        var viewModel = ViewModelProvider(
+
+
+        viewModel = ViewModelProvider(
             viewModelStore,
             object: ViewModelProvider.Factory{
                 override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -49,13 +53,16 @@ class QuackFragment(var infoChoice:Int): Fragment() {
             }
         )[QuackViewModel::class.java]
 
-        viewModel.getData(0)
+        viewModel.getData(infoChoice)
 
-        binding.btnNextQuack.setOnClickListener{
-            viewModel.getData(Random(10000).nextInt())
-        }
+        binding.btnNextQuack.setOnClickListener(::updateData)
 
         return binding.root
+    }
+
+    fun updateData(view:View){
+        infoChoice = Random().nextInt(10000)
+        viewModel.getData(infoChoice)
     }
 
 

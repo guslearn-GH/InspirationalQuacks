@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, QuackFragment(0))
+            .replace(R.id.fragment_container, QuackFragment(1))
             .commit()
 
 
