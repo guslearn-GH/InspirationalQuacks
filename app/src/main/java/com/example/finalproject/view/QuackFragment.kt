@@ -39,8 +39,6 @@ class QuackFragment(var infoChoice:Int): Fragment() {
             false
         )
 
-
-
         var viewModel = ViewModelProvider(
             viewModelStore,
             object: ViewModelProvider.Factory{
