@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">FinalProject</string>
+    <string name="DuckApi">https://random-d.uk/</string>
+    <string name="AffirmationApi">https://www.affirmations.dev/</string>
+    <string name="AdviceApi">https://api.adviceslip.com/advice</string>
+
+</resources>
