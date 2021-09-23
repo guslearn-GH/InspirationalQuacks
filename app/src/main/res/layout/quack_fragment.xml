@@ -10,6 +10,7 @@
         android:id="@+id/iv_duckImg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="24dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
 
@@ -29,6 +30,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btn_nextQuack"
+        android:gravity="center"
         android:paddingBottom="16dp"
 
 
