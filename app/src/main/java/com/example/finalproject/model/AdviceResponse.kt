@@ -1,5 +1,5 @@
 package com.example.finalproject.model
 
-data class AdviceResponse(val slip: AdvicePoko)
+data class AdviceResponse(var slip: AdvicePoko)
 
-data class AdvicePoko(val id:Int, val advice:String)
+data class AdvicePoko(var id:Int, var advice:String)

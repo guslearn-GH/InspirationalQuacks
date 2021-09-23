@@ -51,10 +51,10 @@ class QuackFragment(var infoChoice:Int): Fragment() {
             }
         )[QuackViewModel::class.java]
 
-        viewModel.getData(0)
+        viewModel.getData(1)
 
         binding.btnNextQuack.setOnClickListener{
-            viewModel.getData(Random(10000).nextInt())
+            viewModel.getData(Random(100).nextInt())
         }
 
         return binding.root
