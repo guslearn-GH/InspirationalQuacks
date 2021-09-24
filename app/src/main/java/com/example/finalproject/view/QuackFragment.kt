@@ -61,6 +61,7 @@ class QuackFragment(var infoChoice:Int): Fragment() {
     }
 
     fun updateData(view:View){
+        //save quacks here
         infoChoice = Random().nextInt(10000)
         viewModel.getData(infoChoice)
     }

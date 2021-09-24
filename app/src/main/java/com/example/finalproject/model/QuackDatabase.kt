@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [DaoQuack::class], version = 1)
+@Database(entities = [QuackEntities::class], version = 1, exportSchema = true)
 abstract class QuackDatabase : RoomDatabase() {
 
     abstract fun getDao(): DaoQuack
@@ -13,7 +13,7 @@ abstract class QuackDatabase : RoomDatabase() {
     companion object{
         @Volatile
         private var instance : QuackDatabase? = null
-        fun getInstace(context: Context):QuackDatabase{
+        fun getInstance(context: Context):QuackDatabase{
             val tempInstance = instance
             if(tempInstance != null)
                 return tempInstance

@@ -2,14 +2,15 @@ package com.example.finalproject.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "quack_table")
-class QuackEntities (
-    @ColumnInfo(name="id")
-    val id:Int,
+data class QuackEntities (
+    @PrimaryKey(autoGenerate = true)
+    var id:Int = 0,
     @ColumnInfo(name="url")
-    val url:String,
+    var url:String,
     @ColumnInfo(name="message")
-    val message:String
+    var message:String
 ){
 }

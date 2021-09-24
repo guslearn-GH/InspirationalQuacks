@@ -26,24 +26,12 @@ class MainActivity : AppCompatActivity() {
 
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, QuackFragment(1))
+            .replace(R.id.fragment_container, QuackFragment(0))
             .commit()
 
 
 
-//        var viewModel = ViewModelProvider(
-//            viewModelStore,
-//            object : ViewModelProvider.Factory{
-//                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-//                    return QuackViewModel(infoCounter)
-//                            as T
-//                }
-//            }
-//        )[QuackViewModel::class.java]
 
-
-
-        //binding.btnNextQuack.setOnClickListener(::updateData)
 
     }
 
