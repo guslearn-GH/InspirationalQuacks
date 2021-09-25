@@ -12,12 +12,12 @@ import retrofit2.http.GET
 interface QuackApi {
 
     @GET("/api/quack")//R.string.DuckApi.toString())
-    fun getDuckPicture(): Observable<DuckResponse>
+    fun getDuckPicture(): Call<DuckResponse>
 
     @GET("/")//R.string.AffirmationApi.toString())
-    fun getAffirmation():Observable<AffirmationResponse>
+    fun getAffirmation():Call<AffirmationResponse>
 
     @GET("/advice")//R.string.AdviceApi.toString())
-    fun getAdvice():Observable<AdviceResponse>
+    fun getAdvice():Call<AdviceResponse>
 
 }

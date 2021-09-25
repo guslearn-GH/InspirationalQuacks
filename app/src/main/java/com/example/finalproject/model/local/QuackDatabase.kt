@@ -1,4 +1,4 @@
-package com.example.finalproject.model
+package com.example.finalproject.model.local
 
 import android.content.Context
 import androidx.room.Database
@@ -13,7 +13,7 @@ abstract class QuackDatabase : RoomDatabase() {
     companion object{
         @Volatile
         private var instance : QuackDatabase? = null
-        fun getInstance(context: Context):QuackDatabase{
+        fun getInstance(context: Context): QuackDatabase {
             val tempInstance = instance
             if(tempInstance != null)
                 return tempInstance

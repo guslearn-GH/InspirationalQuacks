@@ -1,8 +1,7 @@
 package com.example.finalproject.model.remote
 
-import android.app.Service
 import com.example.finalproject.BuildConfig
-import com.example.finalproject.model.ServiceType
+import com.example.finalproject.model.common.ServiceType
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

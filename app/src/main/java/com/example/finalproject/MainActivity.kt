@@ -15,10 +15,6 @@ import com.example.finalproject.view.QuackFragment
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityMainBinding
-
-    var infoCounter = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -30,29 +26,6 @@ class MainActivity : AppCompatActivity() {
             .commit()
 
 
-
-
-
     }
 
-
-
-    private fun updateData(view: View) {
-        infoCounter++
-        if(infoCounter>1)
-            infoCounter=0
-
-    }
-//
-//    private fun getData(viewModel: QuackViewModel) {
-//
-//
-//        Glide.with(binding.root)
-//            .load(viewModel.image)
-//            .into(binding.ivDuckImg)
-//
-//        binding.tvInfo.text = viewModel.text
-//
-//
-//    }
 }

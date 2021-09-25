@@ -1,35 +1,37 @@
 package com.example.finalproject.ViewModel
 
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.bumptech.glide.Glide
 import com.example.finalproject.databinding.QuackFragmentBinding
 import com.example.finalproject.model.*
-import com.example.finalproject.model.remote.HttpRequest
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.schedulers.Schedulers
+import com.example.finalproject.model.repository.QuackRepository
 
 private const val TAG = "QuackViewModel"
 class QuackViewModel(private val _binding:QuackFragmentBinding): ViewModel() {
 
-    var image:String = "image/url"
-    //= getData(R.string.DuckApi.toString())
-    var info:String = "Good Advice"
-    //= getData(R.string.AffirmationApi.toString())
-    //lateinit var quack:QuackEntities //= QuackEntities()
+
+    val quackRepo:QuackRepository = QuackRepository(this)
 
     var binding : QuackFragmentBinding = _binding
 
-    private val duckDataSet: MutableLiveData<DuckResponse> = MutableLiveData()
-    private val affirmationDataSet: MutableLiveData<AffirmationResponse> = MutableLiveData()
-    private val adviceDataSet: MutableLiveData<AdviceResponse> = MutableLiveData()
+    private val quackImage: MutableLiveData<String> = MutableLiveData()
+    private val quackMessage: MutableLiveData<String> = MutableLiveData()
+    private val quackId: MutableLiveData<Int> = MutableLiveData()
 
 
 
 
     fun getData(infoChoice:Int){
+        //val repo = QuackRepository(this)
+        //val vmQuack:QuackResponse =
+            quackRepo.getQuack(infoChoice)
+//        Glide.with(binding.root)
+//            .load(quackRepo.currentImage)//.load(vmQuack.url)
+//            .into(binding.ivDuckImg)
+        //binding.tvInfo.text = quackRepo.currentMessage //vmQuack.message
+        //id =quackRepo.currentId //vmQuack.id
+
+        /*
         HttpRequest.getService(ServiceType.Duck)
             .getDuckPicture()
             .subscribeOn(Schedulers.io())
@@ -68,29 +70,25 @@ class QuackViewModel(private val _binding:QuackFragmentBinding): ViewModel() {
                     Log.d(TAG, "onFailure: Failed Advice")
                 })
         }
-
-        //applyQuack()
-
-        //insertQuack()
+*/
 
     }
 
-    fun applyQuack(){
-//        quack = QuackEntities(url=image, message = info)
-//        Glide.with(binding.root)
-//                   .load(quack.url)
-//                    .into(binding.ivDuckImg)
-//        binding.tvInfo.text = quack.message
+    fun getQuackImage():String?{
+        return quackImage.value
+    }
+    fun setQuackImage(data: DuckResponse){
+        this.quackImage.value = data.url
+    }
+    fun getQuackMessage():String?{
+        return quackMessage.value
+    }
+    fun setQuackMessage(data: AffirmationResponse){
+        this.quackMessage.value = data.affirmation
+    }
+    fun setQuackMessage(data: AdviceResponse){
+        this.quackMessage.value = data.slip.advice
     }
 
-    fun insertQuack(){
-//        val qdb = QuackDatabase.getInstance(binding.root.context).getDao()
-//
-//        qdb.saveDataIntoCache(quack)
-//            QuackResponse(
-//            url = quack.url,
-//            message = quack.message
-//        ))
-    }
 
 }
