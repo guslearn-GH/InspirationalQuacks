@@ -7,12 +7,12 @@ import com.example.finalproject.model.*
 import com.example.finalproject.model.repository.QuackRepository
 
 private const val TAG = "QuackViewModel"
-class QuackViewModel(private val _binding:QuackFragmentBinding): ViewModel() {
+class QuackViewModel(): ViewModel() {
 
 
     val quackRepo:QuackRepository = QuackRepository(this)
 
-    var binding : QuackFragmentBinding = _binding
+    //var binding : QuackFragmentBinding = _binding
 
     private val quackImage: MutableLiveData<String> = MutableLiveData()
     private val quackMessage: MutableLiveData<String> = MutableLiveData()
