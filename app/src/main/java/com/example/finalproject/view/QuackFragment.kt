@@ -25,7 +25,7 @@ private const val TAG = "QuackFragment"
 class QuackFragment(var infoChoice:Int): Fragment() {
 
     lateinit var binding: QuackFragmentBinding
-    lateinit var viewModel:QuackViewModel
+    //lateinit var viewModel:QuackViewModel
 
 
     override fun onCreateView(
@@ -42,27 +42,45 @@ class QuackFragment(var infoChoice:Int): Fragment() {
         )
 
 
-
-        viewModel = ViewModelProvider(
+        var viewModel = ViewModelProvider(
             viewModelStore,
             object: ViewModelProvider.Factory{
                 override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                    return QuackViewModel(binding)
+                    return QuackViewModel()
                         as T
                 }
             }
         )[QuackViewModel::class.java]
 
         viewModel.getData(infoChoice)
+        updateImage(viewModel)
+        updateMessage(viewModel)
 
-        binding.btnNextQuack.setOnClickListener(::updateData)
+        binding.btnNextQuack.setOnClickListener {
 
-        return binding.root
+            infoChoice = Random().nextInt(10000)
+            viewModel.getData(infoChoice)
+            updateImage(viewModel)
+            updateMessage(viewModel)
+        }
+
+            return binding.root
+        }
+
+
+
+    fun updateImage(viewModel: QuackViewModel){
+        Glide.with(binding.root)
+            .load(viewModel.getDuckDataSet().value?.let{it.url})
+            .into(binding.ivDuckImg)
     }
 
-    fun updateData(view:View){
-        infoChoice = Random().nextInt(10000)
-        viewModel.getData(infoChoice)
+    fun updateMessage(viewModel: QuackViewModel){
+        if(infoChoice%2==0){
+            binding.tvInfo.text = viewModel.getAffirmationDataSet().value?.let{ it.affirmation }
+        }else{
+            binding.tvInfo.text = viewModel.getAdviceDataSet().value?.let{ it.slip.advice}
+        }
     }
 
 

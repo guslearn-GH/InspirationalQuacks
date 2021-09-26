@@ -24,13 +24,13 @@ import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.*
 
 private const val TAG = "QuackViewModel"
-class QuackViewModel(private val _binding:QuackFragmentBinding): ViewModel() {
+class QuackViewModel(): ViewModel() {
 
     var image:String = "image/url"
     //= getData(R.string.DuckApi.toString())
     var text:String = "Good Advice"
     //= getData(R.string.AffirmationApi.toString())
-    var binding : QuackFragmentBinding = _binding
+    //var binding : QuackFragmentBinding = _binding
 
     private val duckDataSet: MutableLiveData<DuckResponse> = MutableLiveData()
     private val affirmationDataSet: MutableLiveData<AffirmationResponse> = MutableLiveData()
@@ -58,39 +58,42 @@ class QuackViewModel(private val _binding:QuackFragmentBinding): ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 //response.body()?.let{viewModel.applyDuckPicture(it)}
-                Glide.with(binding.root)
-                    .load(it.url)
-                    .into(binding.ivDuckImg)
-                Toast.makeText( binding.root.context , "${it}", Toast.LENGTH_LONG).show()
+                setDuckPicture(it)
+//                Glide.with(binding.root)
+//                    .load(it.url)
+//                    .into(binding.ivDuckImg)
+//                Toast.makeText( binding.root.context , "${it}", Toast.LENGTH_LONG).show()
             },{
                 Log.d(TAG, "getData: Failed Duck")
 
             })
-        if(infoChoice%2==0) {
+        //if(infoChoice%2==0) {
             HttpRequest.getService(ServiceType.Affirmation)
                 .getAffirmation()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     //response.body()?.let{viewModel.applyDuckPicture(it)}
-                    binding.tvInfo.text = it.affirmation //this.text
-                    Toast.makeText(binding.root.context, "${it}", Toast.LENGTH_LONG).show()
+                    //binding.tvInfo.text = it.affirmation //this.text
+                    setAffirmation(it)
+                    //Toast.makeText(binding.root.context, "${it}", Toast.LENGTH_LONG).show()
                 }, {
                     Log.d(TAG, "onFailure: Failed Affirmation")
                 })
-        }
-        else{
+//        }
+//        else{
             HttpRequest.getService(ServiceType.Advice)
                 .getAdvice()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    binding.tvInfo.text = it.slip.advice
-                    Toast.makeText(binding.root.context, "${it}", Toast.LENGTH_LONG).show()
+                    //binding.tvInfo.text = it.slip.advice
+                    setAdvice(it)
+                    //Toast.makeText(binding.root.context, "${it}", Toast.LENGTH_LONG).show()
                 },{
                     Log.d(TAG, "onFailure: Failed Advice")
                 })
-        }
+       // }
         //val repo = QuackRepository(this)
         //repo.getQuack(context)
 
@@ -102,17 +105,17 @@ class QuackViewModel(private val _binding:QuackFragmentBinding): ViewModel() {
 
     }
 
-    fun applyDuckPicture(dataSet: DuckResponse){
+    fun setDuckPicture(dataSet: DuckResponse){
 
         this.duckDataSet.value = dataSet
     }
 
-    fun applyAffirmation(dataSet: AffirmationResponse){
+    fun setAffirmation(dataSet: AffirmationResponse){
 
         this.affirmationDataSet.value = dataSet
     }
 
-    fun applyAdvice(dataSet: AdviceResponse){
+    fun setAdvice(dataSet: AdviceResponse){
 
         this.adviceDataSet.value = dataSet
     }
