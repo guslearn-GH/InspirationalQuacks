@@ -4,13 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.finalproject.databinding.QuackFragmentBinding
 import com.example.finalproject.model.*
-import com.example.finalproject.model.repository.QuackRepository
 
 private const val TAG = "QuackViewModel"
 class QuackViewModel(): ViewModel() {
 
 
-    val quackRepo:QuackRepository = QuackRepository(this)
+    //val quackRepo:QuackRepository = QuackRepository(this)
 
     //var binding : QuackFragmentBinding = _binding
 
@@ -24,7 +23,7 @@ class QuackViewModel(): ViewModel() {
     fun getData(infoChoice:Int){
         //val repo = QuackRepository(this)
         //val vmQuack:QuackResponse =
-            quackRepo.getQuack(infoChoice)
+            //quackRepo.getQuack(infoChoice)
 //        Glide.with(binding.root)
 //            .load(quackRepo.currentImage)//.load(vmQuack.url)
 //            .into(binding.ivDuckImg)

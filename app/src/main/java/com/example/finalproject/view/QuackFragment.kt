@@ -52,6 +52,7 @@ class QuackFragment(var infoChoice:Int): Fragment() {
                 }
             }
         )[QuackViewModel::class.java]
+        getQuack()
 
 //        viewModel.getData(infoChoice)
 //        updateImage(viewModel)
@@ -63,7 +64,7 @@ class QuackFragment(var infoChoice:Int): Fragment() {
 
     override fun onStart() {
         super.onStart()
-        getQuack()
+        //getQuack()
         //viewModel.getData(infoChoice)
     }
 
