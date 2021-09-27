@@ -17,7 +17,11 @@ interface QuackApi {
     @GET("/")//R.string.AffirmationApi.toString())
     fun getAffirmation():Observable<AffirmationResponse>
 
+    @GET("/")
+    fun getAffirmationSync():Call<AffirmationResponse>
+
     @GET("/advice")//R.string.AdviceApi.toString())
     fun getAdvice():Observable<AdviceResponse>
+
 
 }

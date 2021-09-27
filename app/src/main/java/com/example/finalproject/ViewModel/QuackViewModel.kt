@@ -1,11 +1,13 @@
 package com.example.finalproject.ViewModel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.finalproject.model.*
 import com.example.finalproject.model.remote.HttpRequest
+import com.example.finalproject.model.repository.QuackRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 
@@ -18,13 +20,13 @@ class QuackViewModel(): ViewModel() {
     //= getData(R.string.AffirmationApi.toString())
     //var binding : QuackFragmentBinding = _binding
 
-    private val quackDataSet:MutableLiveData<Quack> = MutableLiveData()
+    //private val quackDataSet:MutableLiveData<Quack> = MutableLiveData()
     private val duckDataSet: MutableLiveData<DuckResponse> = MutableLiveData()
     private val affirmationDataSet: MutableLiveData<AffirmationResponse> = MutableLiveData()
     private val adviceDataSet: MutableLiveData<AdviceResponse> = MutableLiveData()
 
 
-
+/*
     fun getQuackDataSet():LiveData<Quack>{
         return quackDataSet
     }
@@ -32,7 +34,7 @@ class QuackViewModel(): ViewModel() {
     fun setQuackDataSet(quack: Quack){
         this.quackDataSet.value = quack
     }
-
+*/
 
     fun getDuckDataSet(): LiveData<DuckResponse>{
         return duckDataSet
@@ -46,7 +48,8 @@ class QuackViewModel(): ViewModel() {
         return adviceDataSet
     }
 
-    fun getData(infoChoice:Int){
+    fun getData(context: Context){
+        /*
         HttpRequest.getService(ServiceType.Duck)
             .getDuckPicture()
             .subscribeOn(Schedulers.io())
@@ -89,8 +92,9 @@ class QuackViewModel(): ViewModel() {
                     Log.d(TAG, "onFailure: Failed Advice")
                 })
        // }
-        //val repo = QuackRepository(this)
-        //repo.getQuack(context)
+        */
+        val repo = QuackRepository(this)
+        repo.getQuack(context)
 
 //        if(infoChoice%2==0)
 //            repo.getQuack(R.string.AffirmationApi.toString(), context)

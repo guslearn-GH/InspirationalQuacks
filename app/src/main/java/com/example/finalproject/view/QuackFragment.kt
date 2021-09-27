@@ -1,20 +1,29 @@
 package com.example.finalproject.view
 
+import android.media.Image
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.example.finalproject.QuackApplication
+import com.example.finalproject.QuackApplication.Companion.quackDao
+import com.example.finalproject.R
 import com.example.finalproject.ViewModel.QuackViewModel
 import com.example.finalproject.databinding.QuackFragmentBinding
 import com.example.finalproject.model.DuckResponse
+
 import com.example.finalproject.model.ServiceType
+import com.example.finalproject.model.local.QuackDatabase
+import com.example.finalproject.model.local.tableQuack
 import com.example.finalproject.model.remote.HttpRequest
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
@@ -52,17 +61,21 @@ class QuackFragment(var infoChoice:Int): Fragment() {
             }
         )[QuackViewModel::class.java]
 
-        viewModel.getData(infoChoice)
-        updateImage(viewModel)
-        updateMessage(viewModel)
-
         binding.btnNextQuack.setOnClickListener {
 
             infoChoice = Random().nextInt(10000)
-            viewModel.getData(infoChoice)
+            viewModel.getData(binding.root.context)//infoChoice)
             updateImage(viewModel)
             updateMessage(viewModel)
+            //insertNewQuack(viewModel)
         }
+
+        viewModel.getData(binding.root.context)//infoChoice)
+        //updateImage(viewModel)
+        //updateMessage(viewModel)
+//        viewModel.getData(binding.root.context)
+//        updateImage(viewModel)
+//        updateMessage(viewModel)
 
             return binding.root
         }
@@ -82,6 +95,23 @@ class QuackFragment(var infoChoice:Int): Fragment() {
             binding.tvInfo.text = viewModel.getAdviceDataSet().value?.let{ it.slip.advice}
         }
     }
+
+    fun insertNewQuack(viewModel: QuackViewModel){
+        //quackDao =//QuackDatabase.newInstance(binding.root.context).getDao()
+
+//        if(viewModel.getDuckDataSet().value!=null
+//            &&viewModel.getAffirmationDataSet().value!=null
+//            &&viewModel.getAdviceDataSet().value!=null) {
+            quackDao.insertQuack(
+                tableQuack(
+                    id = 0,
+                    image = viewModel.getDuckDataSet().value?.let{ it.url} ?: "",
+                    message = binding.tvInfo.text.toString()
+                )
+            )
+        //}
+    }
+
 
 
 
