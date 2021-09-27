@@ -1,27 +1,13 @@
 package com.example.finalproject.ViewModel
 
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.bumptech.glide.Glide
-import com.example.finalproject.MainActivity
-import com.example.finalproject.R
-import com.example.finalproject.databinding.QuackFragmentBinding
-import com.example.finalproject.model.AdviceResponse
-import com.example.finalproject.model.AffirmationResponse
-import com.example.finalproject.model.DuckResponse
-import com.example.finalproject.model.ServiceType
+import com.example.finalproject.model.*
 import com.example.finalproject.model.remote.HttpRequest
-import com.example.finalproject.model.remote.QuackApi
-import com.example.finalproject.model.remote.QuackRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.core.Observer
-import io.reactivex.rxjava3.disposables.Disposable
-import kotlinx.coroutines.*
 
 private const val TAG = "QuackViewModel"
 class QuackViewModel(): ViewModel() {
@@ -32,11 +18,20 @@ class QuackViewModel(): ViewModel() {
     //= getData(R.string.AffirmationApi.toString())
     //var binding : QuackFragmentBinding = _binding
 
+    private val quackDataSet:MutableLiveData<Quack> = MutableLiveData()
     private val duckDataSet: MutableLiveData<DuckResponse> = MutableLiveData()
     private val affirmationDataSet: MutableLiveData<AffirmationResponse> = MutableLiveData()
     private val adviceDataSet: MutableLiveData<AdviceResponse> = MutableLiveData()
 
 
+
+    fun getQuackDataSet():LiveData<Quack>{
+        return quackDataSet
+    }
+
+    fun setQuackDataSet(quack: Quack){
+        this.quackDataSet.value = quack
+    }
 
 
     fun getDuckDataSet(): LiveData<DuckResponse>{
