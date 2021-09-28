@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.finalproject.QuackApplication
 import com.example.finalproject.ViewModel.QuackViewModel
 
-@Database(entities = [tableQuack::class], version =1, exportSchema=true)
+@Database(entities = [Quack::class], version =1, exportSchema=true)
 abstract class QuackDatabase:RoomDatabase() {
 
     abstract fun getDao():QuackDao

@@ -5,11 +5,17 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.finalproject.QuackApplication
 import com.example.finalproject.model.*
+import com.example.finalproject.model.local.Quack
+import com.example.finalproject.model.local.QuackDatabase
 import com.example.finalproject.model.remote.HttpRequest
 import com.example.finalproject.model.repository.QuackRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 private const val TAG = "QuackViewModel"
 class QuackViewModel(): ViewModel() {
@@ -117,5 +123,17 @@ class QuackViewModel(): ViewModel() {
     fun setAdvice(dataSet: AdviceResponse){
 
         this.adviceDataSet.value = dataSet
+    }
+
+    fun insert(context:Context){
+        var tq: Quack = Quack(
+            Id = 0,
+            Image = getDuckDataSet().value?.let{it.url} ?: "/",//viewModel.getDuckDataSet().value?.let{ it.url} ?: "",
+            Message = getAffirmationDataSet().value?.let { it.affirmation } ?: ""//"problems with insert"//binding.tvInfo.text.toString()
+        )
+        CoroutineScope(Dispatchers.IO).launch {
+            QuackApplication.quackDao = QuackDatabase.newInstance(context).getDao()
+            QuackApplication.quackDao.insertQuack(tq)
+        }
     }
 }

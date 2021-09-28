@@ -10,9 +10,9 @@ import io.reactivex.rxjava3.core.Observable
 @Dao
 interface QuackDao {
 
-    @Insert(entity = tableQuack::class,
+    @Insert(//entity = Quack::class,
     onConflict = OnConflictStrategy.REPLACE)
-    fun insertQuack(q:tableQuack)
+    suspend fun insertQuack(q:Quack)
 
 //    @Query(value = "SELECT 1 FROM table_quack")
 //    fun getFirstQuack(): Observable<tableQuack>

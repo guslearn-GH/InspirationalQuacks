@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 import com.example.finalproject.ViewModel.QuackViewModel
 import com.example.finalproject.databinding.ActivityMainBinding
 import com.example.finalproject.model.local.QuackDatabase
-import com.example.finalproject.model.local.tableQuack
+
 import com.example.finalproject.view.QuackFragment
 import org.w3c.dom.Text
 

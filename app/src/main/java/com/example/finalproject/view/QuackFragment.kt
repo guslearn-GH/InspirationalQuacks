@@ -22,8 +22,9 @@ import com.example.finalproject.databinding.QuackFragmentBinding
 import com.example.finalproject.model.DuckResponse
 
 import com.example.finalproject.model.ServiceType
+import com.example.finalproject.model.local.Quack
 import com.example.finalproject.model.local.QuackDatabase
-import com.example.finalproject.model.local.tableQuack
+
 import com.example.finalproject.model.remote.HttpRequest
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
@@ -34,7 +35,7 @@ private const val TAG = "QuackFragment"
 class QuackFragment(var infoChoice:Int): Fragment() {
 
     lateinit var binding: QuackFragmentBinding
-    //lateinit var viewModel:QuackViewModel
+    lateinit var viewModel:QuackViewModel
 
 
     override fun onCreateView(
@@ -51,7 +52,7 @@ class QuackFragment(var infoChoice:Int): Fragment() {
         )
 
 
-        var viewModel = ViewModelProvider(
+        viewModel = ViewModelProvider(
             viewModelStore,
             object: ViewModelProvider.Factory{
                 override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -65,9 +66,9 @@ class QuackFragment(var infoChoice:Int): Fragment() {
 
             infoChoice = Random().nextInt(10000)
             viewModel.getData(binding.root.context)//infoChoice)
-            updateImage(viewModel)
-            updateMessage(viewModel)
-            //insertNewQuack(viewModel)
+            updateImage()//viewModel)
+            updateMessage()//viewModel)
+            insertNewQuack()//viewModel)
         }
 
         viewModel.getData(binding.root.context)//infoChoice)
@@ -82,13 +83,13 @@ class QuackFragment(var infoChoice:Int): Fragment() {
 
 
 
-    fun updateImage(viewModel: QuackViewModel){
+    fun updateImage(){//viewModel: QuackViewModel){
         Glide.with(binding.root)
             .load(viewModel.getDuckDataSet().value?.let{it.url})
             .into(binding.ivDuckImg)
     }
 
-    fun updateMessage(viewModel: QuackViewModel){
+    fun updateMessage(){//viewModel: QuackViewModel){
         if(infoChoice%2==0){
             binding.tvInfo.text = viewModel.getAffirmationDataSet().value?.let{ it.affirmation }
         }else{
@@ -96,19 +97,21 @@ class QuackFragment(var infoChoice:Int): Fragment() {
         }
     }
 
-    fun insertNewQuack(viewModel: QuackViewModel){
+    fun insertNewQuack(){//viewModel: QuackViewModel){
+//        var tq: Quack = Quack(
+//            Id = 0,
+//            Image = "/",//viewModel.getDuckDataSet().value?.let{ it.url} ?: "",
+//            Message = "problems with insert"//binding.tvInfo.text.toString()
+//        )
+
         //quackDao =//QuackDatabase.newInstance(binding.root.context).getDao()
 
 //        if(viewModel.getDuckDataSet().value!=null
 //            &&viewModel.getAffirmationDataSet().value!=null
 //            &&viewModel.getAdviceDataSet().value!=null) {
-            quackDao.insertQuack(
-                tableQuack(
-                    id = 0,
-                    image = viewModel.getDuckDataSet().value?.let{ it.url} ?: "",
-                    message = binding.tvInfo.text.toString()
-                )
-            )
+//        quackDao = QuackDatabase.newInstance(binding.root.context).getDao()
+//            quackDao.insertQuack(tq)
+        viewModel.insert(binding.root.context)
         //}
     }
 
