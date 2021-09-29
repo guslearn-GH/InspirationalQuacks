@@ -101,11 +101,15 @@ class QuackViewModel(): ViewModel() {
             quackDao = QuackDatabase.newInstance(context).getDao()
             var response = quackDao.getOldQuacks()
             if (readingOldQuacks) {
-                quackListPos - 1
+                if(quackListPos==0)
+                    quackListPos = response.size-1
+                else
+                    quackListPos -= 1
                 setQuackDataSet(response.get(quackListPos))
             } else {
                 readingOldQuacks = true
-                quackListPos = response.size - 1
+
+                    quackListPos = response.size - 1
                 setQuackDataSet(response.get(quackListPos))
             }
         }
