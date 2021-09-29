@@ -24,11 +24,6 @@ import java.util.*
 private const val TAG = "QuackViewModel"
 class QuackViewModel(): ViewModel() {
 
-    var image:String = "image/url"
-    //= getData(R.string.DuckApi.toString())
-    var text:String = "Good Advice"
-    //= getData(R.string.AffirmationApi.toString())
-    //var binding : QuackFragmentBinding = _binding
 
     private val quackDataSet:MutableLiveData<Quack> = MutableLiveData()
     private val duckDataSet: MutableLiveData<DuckResponse> = MutableLiveData()
@@ -48,18 +43,6 @@ class QuackViewModel(): ViewModel() {
         this.quackDataSet.postValue(quack)
     }
 
-    fun setDuckToQuack(dr:DuckResponse){
-        this.quackDataSet.value?.let { it.Image = dr.url }
-    }
-
-    fun setAffirmationToQuack(ar:AffirmationResponse){
-        this.quackDataSet.value?.let{it.Message = ar.affirmation}
-    }
-
-    fun setAdviceToQuack(ar:AdviceResponse){
-        this.quackDataSet.value?.let { it.Message = ar.slip.advice }
-    }
-
 
     fun getDuckDataSet(): LiveData<DuckResponse>{
         return duckDataSet
@@ -73,12 +56,9 @@ class QuackViewModel(): ViewModel() {
         return adviceDataSet
     }
 
-    fun getData(context: Context){
-        //var qvm = this
-        //CoroutineScope(Dispatchers.IO).launch {
+    fun getData(){
             val repo = QuackRepository(this)
-            repo.getQuack(context)
-        //}
+            repo.getQuack()
     }
 
     fun setDuckPicture(dataSet: DuckResponse){
@@ -118,8 +98,8 @@ class QuackViewModel(): ViewModel() {
     fun insert(context:Context){
         var tq: Quack = Quack(
             Id = 0,
-            Image = getDuckDataSet().value?.let{it.url} ?: "/",//viewModel.getDuckDataSet().value?.let{ it.url} ?: "",
-            Message = getAffirmationDataSet().value?.let { it.affirmation } ?: ""//"problems with insert"//binding.tvInfo.text.toString()
+            Image = getDuckDataSet().value?.let{it.url} ?: "/",
+            Message = getAffirmationDataSet().value?.let { it.affirmation } ?: ""
         )
         coroutineScope.launch {
             quackDao = QuackDatabase.newInstance(context).getDao()

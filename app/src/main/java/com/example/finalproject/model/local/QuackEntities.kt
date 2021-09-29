@@ -10,10 +10,4 @@ data class Quack (
     var Image:String="/",
     var Message:String="Tough Luckv2"
 )
-//data class tableQuack(
-//    @PrimaryKey(autoGenerate = true)
-//    val id:Int=0,
-//    val image:String,
-//    val message:String
-//
-//)
+

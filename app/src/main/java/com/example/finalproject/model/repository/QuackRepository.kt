@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 private const val TAG = "Repository"
 class QuackRepository(private val viewModel: QuackViewModel){
 
-    fun getQuack(context:Context){
+    fun getQuack(){
 
         viewModel.coroutineScope.launch {
 
@@ -25,44 +25,27 @@ class QuackRepository(private val viewModel: QuackViewModel){
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    //response.body()?.let{viewModel.applyDuckPicture(it)}
                     viewModel.setDuckPicture(it)
-                    //viewModel.setDuckToQuack(it)
-//                Glide.with(binding.root)
-//                    .load(it.url)
-//                    .into(binding.ivDuckImg)
-//                Toast.makeText( binding.root.context , "${it}", Toast.LENGTH_LONG).show()
                 }, {
                     Log.d(TAG, "getData: Failed Duck")
-
                 })
 
-            //if(infoChoice%2==0) {
-            //if(Random().nextInt(10000)%2==0){
             HttpRequest.getService(ServiceType.Affirmation)
                 .getAffirmation()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    //response.body()?.let{viewModel.applyDuckPicture(it)}
-                    //binding.tvInfo.text = it.affirmation //this.text
                     viewModel.setAffirmation(it)
-                    //viewModel.setAffirmationToQuack(it)
-                    //Toast.makeText(binding.root.context, "${it}", Toast.LENGTH_LONG).show()
                 }, {
                     Log.d(TAG, "onFailure: Failed Affirmation")
                 })
-//        }
-//        else {
+
             HttpRequest.getService(ServiceType.Advice)
                 .getAdvice()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    //binding.tvInfo.text = it.slip.advice
                     viewModel.setAdvice(it)
-                    //viewModel.setAdviceToQuack(it)
-                    //Toast.makeText(binding.root.context, "${it}", Toast.LENGTH_LONG).show()
                 }, {
                     Log.d(TAG, "onFailure: Failed Advice")
                 })

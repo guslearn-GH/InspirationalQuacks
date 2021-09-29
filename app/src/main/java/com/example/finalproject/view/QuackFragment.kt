@@ -66,10 +66,10 @@ class QuackFragment(var infoChoice:Int): Fragment() {
 
             infoChoice = Random().nextInt(10000)
             viewModel.readingOldQuacks = false
-            viewModel.getData(binding.root.context)//infoChoice)
-            updateImage()//viewModel)
-            updateMessage()//viewModel)
-            insertNewQuack()//viewModel)
+            viewModel.getData()
+            updateImage()
+            updateMessage()
+            insertNewQuack()
         }
 
         binding.btnBackQuack.setOnClickListener{
@@ -78,19 +78,13 @@ class QuackFragment(var infoChoice:Int): Fragment() {
             updateMessage()
         }
 
-        viewModel.getData(binding.root.context)//infoChoice)
-        //updateImage(viewModel)
-        //updateMessage(viewModel)
-//        viewModel.getData(binding.root.context)
-//        updateImage(viewModel)
-//        updateMessage(viewModel)
-
+        viewModel.getData()
             return binding.root
         }
 
 
 
-    fun updateImage(){//viewModel: QuackViewModel){
+    fun updateImage(){
         if(viewModel.readingOldQuacks){
             Glide.with(binding.root)
                 .load(viewModel.getQuackDataSet().value?.let{it.Image})
@@ -98,13 +92,12 @@ class QuackFragment(var infoChoice:Int): Fragment() {
 
         }else {
             Glide.with(binding.root)
-                //.load(viewModel.getQuackDataSet().value?.let{it.Image})//
                 .load(viewModel.getDuckDataSet().value?.let { it.url })
                 .into(binding.ivDuckImg)
         }
     }
 
-    fun updateMessage(){//viewModel: QuackViewModel){
+    fun updateMessage(){
 
         if(viewModel.readingOldQuacks){
             binding.tvInfo.text = viewModel.getQuackDataSet().value?.let { it.Message }
@@ -123,22 +116,8 @@ class QuackFragment(var infoChoice:Int): Fragment() {
 
     }
 
-    fun insertNewQuack(){//viewModel: QuackViewModel){
-//        var tq: Quack = Quack(
-//            Id = 0,
-//            Image = "/",//viewModel.getDuckDataSet().value?.let{ it.url} ?: "",
-//            Message = "problems with insert"//binding.tvInfo.text.toString()
-//        )
-
-        //quackDao =//QuackDatabase.newInstance(binding.root.context).getDao()
-
-//        if(viewModel.getDuckDataSet().value!=null
-//            &&viewModel.getAffirmationDataSet().value!=null
-//            &&viewModel.getAdviceDataSet().value!=null) {
-//        quackDao = QuackDatabase.newInstance(binding.root.context).getDao()
-//            quackDao.insertQuack(tq)
+    fun insertNewQuack(){
         viewModel.insert(binding.root.context)
-        //}
     }
 
 
