@@ -1,5 +1,6 @@
 package com.example.finalproject.model.local
 
+import android.database.Cursor
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -14,6 +15,6 @@ interface QuackDao {
     onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertQuack(q:Quack)
 
-//    @Query(value = "SELECT 1 FROM table_quack")
-//    fun getFirstQuack(): Observable<tableQuack>
+    @Query(value = "SELECT * FROM quack")
+    suspend fun getOldQuacks(): List<Quack>
 }

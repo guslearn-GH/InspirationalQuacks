@@ -65,10 +65,17 @@ class QuackFragment(var infoChoice:Int): Fragment() {
         binding.btnNextQuack.setOnClickListener {
 
             infoChoice = Random().nextInt(10000)
+            viewModel.readingOldQuacks = false
             viewModel.getData(binding.root.context)//infoChoice)
             updateImage()//viewModel)
             updateMessage()//viewModel)
             insertNewQuack()//viewModel)
+        }
+
+        binding.btnBackQuack.setOnClickListener{
+            readOldQuack()
+            updateImage()
+            updateMessage()
         }
 
         viewModel.getData(binding.root.context)//infoChoice)
@@ -84,17 +91,36 @@ class QuackFragment(var infoChoice:Int): Fragment() {
 
 
     fun updateImage(){//viewModel: QuackViewModel){
-        Glide.with(binding.root)
-            .load(viewModel.getDuckDataSet().value?.let{it.url})
-            .into(binding.ivDuckImg)
+        if(viewModel.readingOldQuacks){
+            Glide.with(binding.root)
+                .load(viewModel.getQuackDataSet().value?.let{it.Image})
+                .into(binding.ivDuckImg)
+
+        }else {
+            Glide.with(binding.root)
+                //.load(viewModel.getQuackDataSet().value?.let{it.Image})//
+                .load(viewModel.getDuckDataSet().value?.let { it.url })
+                .into(binding.ivDuckImg)
+        }
     }
 
     fun updateMessage(){//viewModel: QuackViewModel){
-        if(infoChoice%2==0){
-            binding.tvInfo.text = viewModel.getAffirmationDataSet().value?.let{ it.affirmation }
-        }else{
-            binding.tvInfo.text = viewModel.getAdviceDataSet().value?.let{ it.slip.advice}
+
+        if(viewModel.readingOldQuacks){
+            binding.tvInfo.text = viewModel.getQuackDataSet().value?.let { it.Message }
+        }else {
+            if (infoChoice % 2 == 0) {
+                binding.tvInfo.text =
+                    viewModel.getAffirmationDataSet().value?.let { it.affirmation }
+            } else {
+                binding.tvInfo.text = viewModel.getAdviceDataSet().value?.let { it.slip.advice }
+            }
         }
+    }
+
+    fun readOldQuack(){
+        viewModel.read(binding.root.context)
+
     }
 
     fun insertNewQuack(){//viewModel: QuackViewModel){

@@ -5,7 +5,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.bumptech.glide.Glide
 import com.example.finalproject.QuackApplication
+import com.example.finalproject.QuackApplication.Companion.quackDao
+import com.example.finalproject.R
 import com.example.finalproject.model.*
 import com.example.finalproject.model.local.Quack
 import com.example.finalproject.model.local.QuackDatabase
@@ -16,6 +19,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 private const val TAG = "QuackViewModel"
 class QuackViewModel(): ViewModel() {
@@ -26,21 +30,36 @@ class QuackViewModel(): ViewModel() {
     //= getData(R.string.AffirmationApi.toString())
     //var binding : QuackFragmentBinding = _binding
 
-    //private val quackDataSet:MutableLiveData<Quack> = MutableLiveData()
+    private val quackDataSet:MutableLiveData<Quack> = MutableLiveData()
     private val duckDataSet: MutableLiveData<DuckResponse> = MutableLiveData()
     private val affirmationDataSet: MutableLiveData<AffirmationResponse> = MutableLiveData()
     private val adviceDataSet: MutableLiveData<AdviceResponse> = MutableLiveData()
+    var readingOldQuacks:Boolean = false
+    val coroutineScope:CoroutineScope = CoroutineScope(Dispatchers.IO)
+    private var quackListPos:Int = 0
 
 
-/*
+
     fun getQuackDataSet():LiveData<Quack>{
         return quackDataSet
     }
 
     fun setQuackDataSet(quack: Quack){
-        this.quackDataSet.value = quack
+        this.quackDataSet.postValue(quack)
     }
-*/
+
+    fun setDuckToQuack(dr:DuckResponse){
+        this.quackDataSet.value?.let { it.Image = dr.url }
+    }
+
+    fun setAffirmationToQuack(ar:AffirmationResponse){
+        this.quackDataSet.value?.let{it.Message = ar.affirmation}
+    }
+
+    fun setAdviceToQuack(ar:AdviceResponse){
+        this.quackDataSet.value?.let { it.Message = ar.slip.advice }
+    }
+
 
     fun getDuckDataSet(): LiveData<DuckResponse>{
         return duckDataSet
@@ -55,59 +74,11 @@ class QuackViewModel(): ViewModel() {
     }
 
     fun getData(context: Context){
-        /*
-        HttpRequest.getService(ServiceType.Duck)
-            .getDuckPicture()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                //response.body()?.let{viewModel.applyDuckPicture(it)}
-                setDuckPicture(it)
-//                Glide.with(binding.root)
-//                    .load(it.url)
-//                    .into(binding.ivDuckImg)
-//                Toast.makeText( binding.root.context , "${it}", Toast.LENGTH_LONG).show()
-            },{
-                Log.d(TAG, "getData: Failed Duck")
-
-            })
-        //if(infoChoice%2==0) {
-            HttpRequest.getService(ServiceType.Affirmation)
-                .getAffirmation()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    //response.body()?.let{viewModel.applyDuckPicture(it)}
-                    //binding.tvInfo.text = it.affirmation //this.text
-                    setAffirmation(it)
-                    //Toast.makeText(binding.root.context, "${it}", Toast.LENGTH_LONG).show()
-                }, {
-                    Log.d(TAG, "onFailure: Failed Affirmation")
-                })
-//        }
-//        else{
-            HttpRequest.getService(ServiceType.Advice)
-                .getAdvice()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    //binding.tvInfo.text = it.slip.advice
-                    setAdvice(it)
-                    //Toast.makeText(binding.root.context, "${it}", Toast.LENGTH_LONG).show()
-                },{
-                    Log.d(TAG, "onFailure: Failed Advice")
-                })
-       // }
-        */
-        val repo = QuackRepository(this)
-        repo.getQuack(context)
-
-//        if(infoChoice%2==0)
-//            repo.getQuack(R.string.AffirmationApi.toString(), context)
-//        else
-//            repo.getQuack(R.string.AdviceApi.toString(), context)
-
-
+        //var qvm = this
+        //CoroutineScope(Dispatchers.IO).launch {
+            val repo = QuackRepository(this)
+            repo.getQuack(context)
+        //}
     }
 
     fun setDuckPicture(dataSet: DuckResponse){
@@ -125,15 +96,30 @@ class QuackViewModel(): ViewModel() {
         this.adviceDataSet.value = dataSet
     }
 
+    fun read(context: Context){
+        coroutineScope.launch {
+            quackDao = QuackDatabase.newInstance(context).getDao()
+            var response = quackDao.getOldQuacks()
+            if (readingOldQuacks) {
+                quackListPos - 1
+                setQuackDataSet(response.get(quackListPos))
+            } else {
+                readingOldQuacks = true
+                quackListPos = response.size - 1
+                setQuackDataSet(response.get(quackListPos))
+            }
+        }
+    }
+
     fun insert(context:Context){
         var tq: Quack = Quack(
             Id = 0,
             Image = getDuckDataSet().value?.let{it.url} ?: "/",//viewModel.getDuckDataSet().value?.let{ it.url} ?: "",
             Message = getAffirmationDataSet().value?.let { it.affirmation } ?: ""//"problems with insert"//binding.tvInfo.text.toString()
         )
-        CoroutineScope(Dispatchers.IO).launch {
-            QuackApplication.quackDao = QuackDatabase.newInstance(context).getDao()
-            QuackApplication.quackDao.insertQuack(tq)
+        coroutineScope.launch {
+            quackDao = QuackDatabase.newInstance(context).getDao()
+            quackDao.insertQuack(tq)
         }
     }
 }
