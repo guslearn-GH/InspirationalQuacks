@@ -1,6 +1,7 @@
 package com.example.finalproject.view
 
 import android.media.Image
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -51,6 +52,8 @@ class QuackFragment(var infoChoice:Int): Fragment() {
             false
         )
 
+        binding.btnBackQuack.visibility = View.INVISIBLE
+
 
         viewModel = ViewModelProvider(
             viewModelStore,
@@ -66,10 +69,17 @@ class QuackFragment(var infoChoice:Int): Fragment() {
 
             infoChoice = Random().nextInt(10000)
             viewModel.readingOldQuacks = false
+            binding.btnBackQuack.visibility = View.VISIBLE
+            binding.ivDuckImg.visibility = View.VISIBLE
+            binding.tvInfo.visibility = View.VISIBLE
+
+            binding.ivInsp.visibility = View.INVISIBLE
+            binding.ivQck.visibility = View.INVISIBLE
             viewModel.getData()
             updateImage()
             updateMessage()
             insertNewQuack()
+
         }
 
         binding.btnBackQuack.setOnClickListener{
@@ -81,6 +91,11 @@ class QuackFragment(var infoChoice:Int): Fragment() {
         viewModel.getData()
             return binding.root
         }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.deleteAll(binding.root.context)
+    }
 
 
 

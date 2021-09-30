@@ -106,4 +106,11 @@ class QuackViewModel(): ViewModel() {
             quackDao.insertQuack(tq)
         }
     }
+
+    fun deleteAll(context:Context){
+        coroutineScope.launch {
+            quackDao = QuackDatabase.newInstance(context).getDao()
+            quackDao.deleteOldQuacks()
+        }
+    }
 }
